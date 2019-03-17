@@ -1,11 +1,15 @@
 def decrypt(input_string, shift):
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     output_string = []
+    # Check for cases where shift is 0 or larger than alphabet length
     if shift >= 26:
         shift = (shift % 26)
     if shift == 0:
         return input_string
-    print("SHIFT = ", shift)
+      
+    # Iterate through the input string by character, using the index of the letter in the alphabet and the shift to
+    # find the char to put in the output string. Deals with cases such as uppercase letters and non letter
+    # characters, as well as if the shift goes past the end of the alphabet.
     for char in input_string:
         uppercase = False
         if (char == "a") or (char == "A"):
@@ -27,5 +31,6 @@ def decrypt(input_string, shift):
         if uppercase:
             encrypt_char = encrypt_char.upper()
         output_string.append(encrypt_char)
+    # Take the output string, which was created as a list, and join it into a proper string.
     output_string = ''.join(output_string)
     return output_string
