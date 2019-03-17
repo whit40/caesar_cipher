@@ -6,6 +6,7 @@ def encrypt(input_string, shift):
         shift = shift % 26
     if shift == 0:
         return input_string
+      
     # Iterate through the input string by character, using the index of the letter in the alphabet and the shift to
     # find the char to put in the output string. Deals with cases such as uppercase letters and non letter
     # characters, as well as if the shift goes past the end of the alphabet.
@@ -30,6 +31,7 @@ def encrypt(input_string, shift):
         if uppercase:
             encrypt_char = encrypt_char.upper()
         output_string.append(encrypt_char)
+        
     # Take the output string, which was created as a list, and join it into a proper string.
     output_string = ''.join(output_string)
     return output_string
