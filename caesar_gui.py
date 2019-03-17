@@ -2,6 +2,11 @@
 import tkinter as tk
 from tkinter import ttk
 
+# Stored in the same directory
+import encrypt as en
+import decrypt as de
+
+import pdb
 
 # Create the main window for the caeser cipher
 class caesarCipherGui:
@@ -44,12 +49,12 @@ class caesarCipherGui:
         self.enmessage_label = ttk.Label(self.encryptmessage, text="Enter the message you wish to encrypt:")
         self.enmessage_label.pack()
         
-        enS = tk.Scrollbar(self.encryptmessage)
-        enT = tk.Text(self.encryptmessage, height=8, width=50)
-        enS.pack(side="right", fill="y")
-        enT.pack(side="left", fill="y")
-        enS.config(command=enT.yview)
-        enT.config(yscrollcommand=enS.set)
+        self.enS = tk.Scrollbar(self.encryptmessage)
+        self.enT = tk.Text(self.encryptmessage, height=8, width=50)
+        self.enS.pack(side="right", fill="y")
+        self.enT.pack(side="left", fill="y")
+        self.enS.config(command=self.enT.yview)
+        self.enT.config(yscrollcommand=self.enS.set)
 
         # Create button for encrypting message
         self.encrypt_button = tk.Button(encrypt_tab, text="encrypt message", command = self.encryption)
@@ -85,12 +90,12 @@ class caesarCipherGui:
         self.demessage_label = ttk.Label(self.decryptmessage, text="Enter the message you wish to decrypt:")
         self.demessage_label.pack()
         
-        deS = tk.Scrollbar(self.decryptmessage)
-        deT = tk.Text(self.decryptmessage, height=8, width=50)
-        deS.pack(side="right", fill="y")
-        deT.pack(side="left", fill="y")
-        deS.config(command=deT.yview)
-        deT.config(yscrollcommand=deS.set)
+        self.deS = tk.Scrollbar(self.decryptmessage)
+        self.deT = tk.Text(self.decryptmessage, height=8, width=50)
+        self.deS.pack(side="right", fill="y")
+        self.deT.pack(side="left", fill="y")
+        self.deS.config(command=self.deT.yview)
+        self.deT.config(yscrollcommand=self.deS.set)
 
         # Create button for decrypting message
         self.decrypt_button = tk.Button(decrypt_tab, text="decrypt message", command = self.decryption)
@@ -109,11 +114,19 @@ class caesarCipherGui:
         self.root.tk.mainloop()
 
 
+    def retrieve_input(self, textBox):  # To retrieve information from Text() widget
+        inputValue = textBox.get("1.0","end-1c")
+        return str(inputValue)
+        
+
     def encryption(self):
         # Verify that the input for the key and intended message is correct type
         try:
-            enkey = float(self.enkey_entry.get())
-            enmessage = str(enT.get())
+            enkey = int(self.enkey_entry.get())
+            enmessage = str(self.retrieve_input(self.enT))
+
+            new_message = en.encrypt(enmessage, enkey)
+            self.encrypted_answer.set(new_message)
 
         except TypeError:
             self.encrypted_answer.set("An error has occurred")
@@ -122,11 +135,17 @@ class caesarCipherGui:
     def decryption(self):
         # Verify that the input for the key and intended message is correct type
         try:
-            dekey = float(self.dekey_entry.get())
-            demessage = str(deT.get())
+            #pdb.set_trace()
+            dekey = int(self.dekey_entry.get())
+            demessage = str(self.retrieve_input(self.deT))
+
+            new_message = de.decrypt(demessage, dekey)
+            self.decrypted_answer.set(new_message)
 
         except TypeError:
             self.decrypted_answer.set("An error has occurred")
+            print(type(demessage))
+            print(type(dekey))
         
         
 
