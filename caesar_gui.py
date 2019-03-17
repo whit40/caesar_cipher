@@ -5,8 +5,8 @@ from tkinter import ttk
 # Stored in the same directory
 import encrypt as en
 import decrypt as de
+import encrypt_decrypt as exception  # For if there is type error
 
-import pdb
 
 # Create the main window for the caeser cipher
 class caesarCipherGui:
@@ -129,13 +129,17 @@ class caesarCipherGui:
             self.encrypted_answer.set(new_message)
 
         except TypeError:
-            self.encrypted_answer.set("An error has occurred")
+            # For if the first encryption function does not work
+            try:
+                new_message = exception.encrypt(enmessage, enkey)
+                self.encrypted_answer.set(new_message)
+            except TypeError:
+                self.encrypted_answer.set("An error has occurred")
 
 
     def decryption(self):
         # Verify that the input for the key and intended message is correct type
         try:
-            #pdb.set_trace()
             dekey = int(self.dekey_entry.get())
             demessage = str(self.retrieve_input(self.deT))
 
@@ -143,9 +147,12 @@ class caesarCipherGui:
             self.decrypted_answer.set(new_message)
 
         except TypeError:
-            self.decrypted_answer.set("An error has occurred")
-            print(type(demessage))
-            print(type(dekey))
+            # For if the first decryption function does not work
+            try:
+                new_message = exception.decrypt(demessage, dekey)
+                self.decrypted_answer.set(new_message)
+            except TypeError:
+                self.decrypted_answer.set("An error has occurred")
         
         
 
